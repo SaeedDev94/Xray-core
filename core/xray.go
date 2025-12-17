@@ -233,6 +233,7 @@ func initInstanceWithConfig(config *Config, server *Instance) (bool, error) {
 			obm, _ := server.GetFeature(outbound.ManagerType()).(outbound.Manager)
 			return obm
 		}(),
+		config.Socket,
 	)
 
 	server.resolveLock.Lock()

@@ -11,9 +11,27 @@ import (
 	"golang.org/x/sys/unix"
 )
 
+type FdCallback func(value int)
+
+type DialerSocket struct {
+	FdCallback FdCallback
+}
+
+var dialerSocket *DialerSocket
+
+func NewDialerSocket(cb FdCallback) *DialerSocket {
+	return &DialerSocket{
+		FdCallback: cb,
+	}
+}
+
 // applyOutboundSocketOptions applies socket options for outbound connection.
 // note that unlike other part of Xray, this function needs network with speified network stack(tcp4/tcp6/udp4/udp6)
 func applyOutboundSocketOptions(network string, address string, fd uintptr, config *SocketConfig) error {
+	if dialerSocket != nil {
+		dialerSocket.FdCallback(int(fd))
+	}
+
 	if config.Mark != 0 {
 		if err := syscall.SetsockoptInt(int(fd), syscall.SOL_SOCKET, syscall.SO_MARK, int(config.Mark)); err != nil {
 			return errors.New("failed to set SO_MARK").Base(err)
