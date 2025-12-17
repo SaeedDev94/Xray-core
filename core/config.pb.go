@@ -7,6 +7,7 @@
 package core
 
 import (
+	"github.com/xtls/xray-core/transport/internet"
 	serial "github.com/xtls/xray-core/common/serial"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -28,6 +29,8 @@ type Config struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// Socket fd resolver
+	Socket *internet.DialerSocket
 	// Inbound handler configurations. Must have at least one item.
 	Inbound []*InboundHandlerConfig `protobuf:"bytes,1,rep,name=inbound,proto3" json:"inbound,omitempty"`
 	// Outbound handler configurations. Must have at least one item. The first

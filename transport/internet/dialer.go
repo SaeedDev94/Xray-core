@@ -283,7 +283,8 @@ func DialSystem(ctx context.Context, dest net.Destination, sockopt *SocketConfig
 	return effectiveSystemDialer.Dial(ctx, src, dest, sockopt)
 }
 
-func InitSystemDialer(dc dns.Client, om outbound.Manager) {
+func InitSystemDialer(dc dns.Client, om outbound.Manager, socket *DialerSocket) {
 	dnsClient = dc
 	obm = om
+	dialerSocket = socket
 }
