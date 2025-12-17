@@ -8,6 +8,7 @@ package core
 
 import (
 	serial "github.com/xtls/xray-core/common/serial"
+	internet "github.com/xtls/xray-core/transport/internet"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,7 +26,8 @@ const (
 // Config is the master config of Xray. Xray takes this config as input and
 // functions accordingly.
 type Config struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
+	Socket *internet.DialerSocket
+	state  protoimpl.MessageState `protogen:"open.v1"`
 	// Inbound handler configurations. Must have at least one item.
 	Inbound []*InboundHandlerConfig `protobuf:"bytes,1,rep,name=inbound,proto3" json:"inbound,omitempty"`
 	// Outbound handler configurations. Must have at least one item. The first
